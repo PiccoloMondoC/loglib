@@ -1,4 +1,3 @@
-// sky-logs/pkg/clientlib/logclient/logclient.go
 package logclient
 
 import (
