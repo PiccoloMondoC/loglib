@@ -1,3 +1,4 @@
+// sky-logs/pkg/clientlib/logclient/logclient.go
 package logclient
 
 import (
@@ -14,14 +15,18 @@ import (
 type Client struct {
 	HttpClient *http.Client
 	BaseURL    string // Base URL of LogAggregator service
+	Token      string
+	ApiKey     string
 }
 
-func NewClient(baseURL string) *Client {
+func NewClient(baseURL string, token string, apiKey string) *Client {
 	return &Client{
 		HttpClient: &http.Client{
 			Timeout: time.Second * 10,
 		},
 		BaseURL: baseURL,
+		Token:   token,
+		ApiKey:  apiKey,
 	}
 }
 
@@ -38,6 +43,8 @@ func (c *Client) AggregateLogs(ctx context.Context, logEntry logtypes.LogEntry) 
 		return err
 	}
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+c.Token)
+	req.Header.Set("X-API-Key", c.ApiKey)
 
 	// Send the request
 	resp, err := c.HttpClient.Do(req)
