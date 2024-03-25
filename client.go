@@ -1,4 +1,4 @@
-package logclient
+package loglib
 
 import (
 	"bytes"
